@@ -3,6 +3,9 @@
 #include "lcddraw.h"
 #include "draw_shapes.h"
 
+#include "buzzer.h"
+
+
 // global vars for the rectangle
 rectangle rect1;
 /* int rect_row, rect_col; */
@@ -42,6 +45,7 @@ draw_moving_shapes(void)
   int left_col = rect1.old_rect_col - (rect1.width / 2);
   int top_row  = rect1.old_rect_row - (rect1.height / 2);
 
+  
   // blank out the old rectangle
   fillRectangle(left_col, top_row, rect1.width, rect1.height, background_color);
 
@@ -53,9 +57,10 @@ draw_moving_shapes(void)
   
   // draw and update the circle
   moving_circle();
-
+  
   // draw the triangle
   draw_triangle();
+  buzzer_set_period(0);
 }
 
 void
@@ -212,10 +217,14 @@ moving_circle(void)
   if ( (cir1.cir_x + cir1.r) >= screenWidth || (cir1.cir_x - cir1.r) <= 0) {
     // top or bottom hit, reverse x velocity
     x_vel = x_vel * -1;
+    buzzer_set_period(250);
+    
   }
   if ( ( cir1.cir_y - cir1.r ) <= 0 ||            // left boundary
        ( cir1.cir_y + cir1.r ) >= screenHeight ) { // right boundary
     // right or left hit, reverse y velocity
     y_vel = y_vel * -1;
+    buzzer_set_period(250);
   }
+  
 }
