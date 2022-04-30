@@ -42,24 +42,26 @@ init_shapes(void)
 void
 draw_moving_shapes(void)
 {
-  int left_col = rect1.old_rect_col - (rect1.width / 2);
-  int top_row  = rect1.old_rect_row - (rect1.height / 2);
+  // int left_col = rect1.old_rect_col - (rect1.width / 2);
+  // int top_row  = rect1.old_rect_row - (rect1.height / 2);
 
   
   // blank out the old rectangle
-  fillRectangle(left_col, top_row, rect1.width, rect1.height, background_color);
+  // fillRectangle(left_col, top_row, rect1.width, rect1.height, background_color);
 
   // blank out the old circle
   draw_circle(cir1.old_cir_x, cir1.old_cir_y, cir1.r, background_color);
 
   // draw and update the rectangle
-  moving_rectangle(&rect1);
+  // moving_rectangle(&rect1);
   
   // draw and update the circle
   moving_circle();
+
+  //draw custom scene
+  draw_Scene();
   
-  // draw the triangle
-  draw_triangle();
+  // turn off buzzer
   buzzer_set_period(0);
 }
 
@@ -115,16 +117,14 @@ moving_rectangle(rectangle *to_draw)
 
 
 void
-draw_triangle(void)
+draw_Scene(void)
 {
   u_char height = 40;
   u_char row = 80, col = screenWidth / 2;
 
   u_char step = 0;
 
-  unsigned int blue = 31, green = 0, red = 31;
-
-  unsigned int color = (blue << 11) | (green << 5) | red;
+  unsigned int color = COLOR_CHOCOLATE;
 
   // draw a n equilateral triangle
   // starts at the top and works down
@@ -137,6 +137,9 @@ draw_triangle(void)
     u_char width     = end_col - start_col;
     fillRectangle(col - (step / 2), row+step, width, 1, color);
   }
+
+  fillRectangle(col-(step / 2), row+step, 40, 20, color);
+  fillRectangle(0, 140, 128, 30, COLOR_GREEN);
 }
 
 void
@@ -199,7 +202,7 @@ moving_circle(void)
   static int x_vel = 5;
   static int y_vel = 10;
   
-  u_int color = COLOR_SIENNA;
+  u_int color = COLOR_YELLOW;
 
 
   // draw at the new position
