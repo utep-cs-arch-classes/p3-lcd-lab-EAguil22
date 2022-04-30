@@ -8,7 +8,7 @@
 void
 __interrupt_vec(WDT_VECTOR) WDT()
 {
-  const  u_int second_limit = 250;
+  const  u_int second_limit = 5;
   static u_int second_count = 0;
 
   second_count++;
