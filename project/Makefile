@@ -1,5 +1,5 @@
 # makefile configuration
-COMMON_OBJECTS		= wdt_handler.o p2_interrupt_handler.o draw_shapes.o switches.o wdt_c_handler.o
+COMMON_OBJECTS		= wdtInterruptHandler.o draw_shapes.o buzzer.o switches.o states.o
 CPU             	= msp430g2553
 CFLAGS          	= -mmcu=${CPU} -Os -I../h
 LDFLAGS		= -L../lib -L/opt/ti/msp430_gcc/include/ 
@@ -8,14 +8,18 @@ LDFLAGS		= -L../lib -L/opt/ti/msp430_gcc/include/
 CC              = msp430-elf-gcc
 AS              = msp430-elf-gcc -mmcu=${CPU} -c
 
-all:wakedemo.elf
+all:main.elf
 
 #additional rules for files
-wakedemo.elf: ${COMMON_OBJECTS} wakedemo.o 
+main.elf: ${COMMON_OBJECTS} main.o 
 	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^ -lTimer -lLcd 
 
-load: wakedemo.elf
+load: main.elf
 	msp430loader.sh $^
 
 clean:
 	rm -f *.o *.elf
+
+buzzer.o: buzzer.h
+switches.o: switches.h
+state.o: state.h swtiches.h draw_shapes.h
