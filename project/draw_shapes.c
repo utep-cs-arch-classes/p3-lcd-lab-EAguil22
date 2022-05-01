@@ -4,7 +4,7 @@
 #include "draw_shapes.h"
 
 #include "buzzer.h"
-
+#include "states.h"
 
 // global vars for the rectangle
 rectangle rect1;
@@ -23,20 +23,25 @@ u_int background_color = COLOR_BLUE;
 void
 init_shapes(void)
 {
-  // vars for the rectangle
+  /*  // vars for the rectangle
   rect1.rect_row = 40;
   rect1.rect_col = screenWidth / 2;
   rect1.old_rect_row = 40;
   rect1.old_rect_col = screenWidth / 2;
   rect1.height = 10;
   rect1.width  = 60;
-
+  */
+  clearScreen(background_color);
   // vars for the circle
   cir1.cir_y = 60;
   cir1.cir_x = screenWidth / 2;
   cir1.old_cir_y = 60;
   cir1.old_cir_x = screenWidth / 2;
   cir1.r = 20;
+
+  draw_roof();
+  draw_house();
+  draw_road();
 }
 
 void
@@ -55,14 +60,14 @@ draw_moving_shapes(void)
   // draw and update the rectangle
   // moving_rectangle(&rect1);
   
-  // draw and update the circle
+  // draw and update the SUN
   moving_circle();
-
-  //draw custom scene
-  draw_Scene();
   
   // turn off buzzer
   buzzer_set_period(0);
+
+  //switch case
+  
 }
 
 void
@@ -117,7 +122,7 @@ moving_rectangle(rectangle *to_draw)
 
 
 void
-draw_Scene(void)
+draw_roof(void)
 {
   u_char height = 40;
   u_char row = 80, col = screenWidth / 2;
@@ -138,9 +143,33 @@ draw_Scene(void)
     fillRectangle(col - (step / 2), row+step, width, 1, color);
   }
 
-  fillRectangle(col-(step / 2), row+step, 40, 20, color);
-  fillRectangle(0, 140, 128, 30, COLOR_GREEN);
+  // fillRectangle(col-(step / 2), row+step, 40, 20, color);
+  // fillRectangle(0, 140, 128, 30, COLOR_GREEN);
 }
+
+void
+draw_house(void)
+{
+  u_char height = 40;
+  u_char row = 80, col = screenWidth / 2;
+  u_char step = 0;
+
+  unsigned int color = COLOR_CHOCOLATE;
+
+  for (step = 0; step < height; step++){
+
+  }
+  
+  fillRectangle(col-(step / 2), row+step, 40, 20, color);
+}
+
+void
+draw_road(void)
+{
+  fillRectangle(0, 140, 128, 30, COLOR_GREEN);
+  fillRectangle(65, 140, 40, 30, COLOR_BLACK);
+}
+  
 
 void
 drawHorizontalLine(u_int x_start, u_int x_end, u_int y, u_int colorBGR)
@@ -216,18 +245,20 @@ moving_circle(void)
   cir1.cir_x += x_vel;
   cir1.cir_y += y_vel;
   
-  // check boundaries, see if rectangle has hit the edges
+   // check boundaries, see if rectangle has hit the edges
   if ( (cir1.cir_x + cir1.r) >= screenWidth || (cir1.cir_x - cir1.r) <= 0) {
     // top or bottom hit, reverse x velocity
     x_vel = x_vel * -1;
-    buzzer_set_period(250);
+    count += 1;
+    state = 1;
     
   }
   if ( ( cir1.cir_y - cir1.r ) <= 0 ||            // left boundary
        ( cir1.cir_y + cir1.r ) >= screenHeight ) { // right boundary
     // right or left hit, reverse y velocity
     y_vel = y_vel * -1;
-    buzzer_set_period(250);
+    count += 1;
+    state = 1;
   }
   
 }

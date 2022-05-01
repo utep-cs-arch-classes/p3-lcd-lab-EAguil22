@@ -1,7 +1,9 @@
 #ifndef _DRAW_SHAPES_H_
 #define _DRAW_SHAPES_H_
 
+
 #include <lcdutils.h>
+
 
 typedef struct rect_st {
   int rect_row;
@@ -22,6 +24,7 @@ typedef struct cir_st {
 
 extern u_int background_color;
 
+
 /* initializes shape positions */
 void init_shapes(void);
 
@@ -40,7 +43,11 @@ void moving_circle(void);
 void draw_rectangle(void);
 
 /* draws a triangle */
-void draw_triangle(void);
+void draw_roof(void);
+
+void draw_house(void);
+
+void draw_road(void);
 
 /* draws a circle with the given parameters */
 void draw_circle(int x, int y, int r, u_int color);
