@@ -13,26 +13,29 @@
 void
 __interrupt_vec(WDT_VECTOR) WDT()
 {
-  const  u_int second_limit = 25;
+  const  u_int second_limit = 100;
   static u_int second_count = 0;
 
   second_count++;
 
   if (second_count >= second_limit) {
-    if(count == 0){
-      
+    if (count == 0){
       state = 1;
     }
-    else if (count >= 25){
+    
+    if (count >= 25){
       state = 3;
     }
     
-    draw_moving_shapes();
     
-    stateSelection();
+    draw_moving_shapes();
+
+    // stateSelection();
    
     second_count = 0;
   }
+
+  stateSelection();
   
 } 
 

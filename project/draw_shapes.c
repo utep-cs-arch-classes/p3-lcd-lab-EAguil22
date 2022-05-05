@@ -2,6 +2,7 @@
 #include "lcdutils.h"
 #include "lcddraw.h"
 #include "draw_shapes.h"
+#include "switches.h"
 
 #include "buzzer.h"
 #include "states.h"
@@ -18,7 +19,8 @@ rectangle rect1;
 /* int r; */
 circle cir1;
 
-u_int background_color = COLOR_BLUE;
+u_int background_color = COLOR_SKY_BLUE;
+short redrawScreen = 1;
 
 void
 init_shapes(void)
@@ -31,7 +33,7 @@ init_shapes(void)
   rect1.height = 10;
   rect1.width  = 60;
   */
-  clearScreen(background_color);
+  //  clearScreen(background_color);
   // vars for the circle
   cir1.cir_y = 60;
   cir1.cir_x = screenWidth / 2;
@@ -65,9 +67,8 @@ draw_moving_shapes(void)
   
   // turn off buzzer
   buzzer_set_period(0);
-
-  //switch case
   
+ 
 }
 
 void
@@ -130,10 +131,14 @@ draw_roof(void)
   u_char step = 0;
 
   unsigned int color = COLOR_CHOCOLATE;
-
+  
+  //brick smokestack
+  fillRectangle(45, 90, 10, 28, COLOR_FIREBRICK);
+  
   // draw a n equilateral triangle
   // starts at the top and works down
   // at the first row the width is 1, second 2 and so on
+ 
   for (step = 0; step < height; step++) {
     // left side of triangle
     u_char start_col = col - (step / 2);
@@ -143,8 +148,7 @@ draw_roof(void)
     fillRectangle(col - (step / 2), row+step, width, 1, color);
   }
 
-  // fillRectangle(col-(step / 2), row+step, 40, 20, color);
-  // fillRectangle(0, 140, 128, 30, COLOR_GREEN);
+  
 }
 
 void
@@ -155,19 +159,29 @@ draw_house(void)
   u_char step = 0;
 
   unsigned int color = COLOR_CHOCOLATE;
-
+  //for loop to be at the end of the roof
   for (step = 0; step < height; step++){
 
   }
-  
+  //framing of the house
   fillRectangle(col-(step / 2), row+step, 40, 20, color);
+  //doorframe
+  fillRectangle(70, 120, 10, 30, COLOR_RED);   
+
+  //window
+  fillRectangle(50, 120, 10, 10, COLOR_BLUE);
+  fillRectangle(50, 125, 10, 1, COLOR_BLACK);
+  fillRectangle(54, 120, 1, 10, COLOR_BLACK);
 }
 
 void
 draw_road(void)
 {
+  //grass
   fillRectangle(0, 140, 128, 30, COLOR_GREEN);
+  //roadway
   fillRectangle(65, 140, 40, 30, COLOR_BLACK);
+  fillRectangle(85, 150, 5, 10, COLOR_WHITE);
 }
   
 
@@ -251,6 +265,7 @@ moving_circle(void)
     x_vel = x_vel * -1;
     count += 1;
     state = 1;
+    
     
   }
   if ( ( cir1.cir_y - cir1.r ) <= 0 ||            // left boundary
